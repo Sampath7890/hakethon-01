@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Learning - Learn Lite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2ecc71;
+            --accent-color: #9b59b6;
+            --background-color: #f5f6fa;
+            --card-color: #ffffff;
+            --text-color: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .profile-sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .profile-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.9;
+            z-index: 0;
+        }
+
+        .profile-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: block;
+            border: 4px solid var(--card-color);
+            box-shadow: var(--shadow);
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234a90e2"/><path d="M50 65c-8.284 0-15-6.716-15-15s6.716-15 15-15 15 6.716 15 15-6.716 15-15 15z" fill="%23fff"/></svg>');
+        }
+
+        .level-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: rgba(173, 216, 230, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .level {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin: 0.5rem 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-container {
+            margin-top: 1rem;
+            background: rgba(173, 216, 230, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(173, 216, 230, 0.5);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 75%;
+            transition: width 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-text {
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(173, 216, 230, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: 0.25rem;
+        }
+
+        .main-content {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.8;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 0 1rem;
+            color: var(--text-color);
+        }
+
+        .card-content {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-decoration {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><linearGradient id="b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%234a90e2;stop-opacity:0.2"/><stop offset="100%" style="stop-color:%232ecc71;stop-opacity:0.2"/></linearGradient></defs><path fill="url(%23b)" d="M100 0c55.228 0 100 44.772 100 100s-44.772 100-100 100S0 155.228 0 100 44.772 0 100 0zm0 30c-38.66 0-70 31.34-70 70s31.34 70 70 70 70-31.34 70-70-31.34-70-70-70z"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .start-quiz {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .start-quiz:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.98);
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close:hover {
+            color: var(--text-color);
+        }
+
+        #questionContainer {
+            margin-bottom: 20px;
+        }
+
+        #questionText {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        #options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: rgba(74, 144, 226, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .option.selected {
+            background: rgba(74, 144, 226, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        #quizProgress {
+            margin: 20px 0;
+        }
+
+        #progressBar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        #progressFill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        #questionNumber {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .quiz-button {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="profile-sidebar">
+            <div class="profile-content">
+                <div class="avatar"></div>
+                <div class="level-info">
+                    <h2 class="level">Level 12</h2>
+                    <p class="title">AI Explorer</p>
+                    <div class="progress-container">
+                        <p class="progress-text">Current Progress</p>
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <p class="progress-text">75% to Level 13</p>
+                    </div>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <p class="stat-value">42</p>
+                            <p class="stat-label">Lessons Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-value">2.8K</p>
+                            <p class="stat-label">XP Earned</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Daily Challenges</h2>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 class="card-title">Neural Network Navigator</h3>
+                        <p class="card-content">Complete 3 AI fundamentals lessons to earn bonus XP and unlock special achievements.</p>
+                        <div class="card-footer">
+                            <span class="badge">500 XP</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Machine Learning Master</h3>
+                        <p class="card-content">Train your first AI model and share your results with the community.</p>
+                        <div class="card-footer">
+                            <span class="badge">750 XP</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Learning Paths</h2>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 class="card-title">AI Fundamentals</h3>
+                        <p class="card-content">Learn the basics of artificial intelligence and machine learning.</p>
+                        <div class="card-footer">
+                            <span class="badge">Beginner</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Deep Learning Deep Dive</h3>
+                        <p class="card-content">Explore neural networks and advanced AI concepts.</p>
+                        <div class="card-footer">
+                            <span class="badge">Intermediate</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">AI Ethics & Society</h3>
+                        <p class="card-content">Understand the impact of AI on society and ethical considerations.</p>
+                        <div class="card-footer">
+                            <span class="badge">Advanced</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Subject Quizzes</h2>
+                </div>
+                <div class="card-grid">
+                    <div class="card quiz-card" data-subject="ai">
+                        <h3 class="card-title">AI & Machine Learning Quiz</h3>
+                        <p class="card-content">Test your knowledge of artificial intelligence fundamentals.</p>
+                        <div class="card-footer">
+                            <span class="badge">20 Questions</span>
+                            <button class="start-quiz" onclick="startQuiz('ai')">Start Quiz</button>
+                        </div>
+                    </div>
+                    <div class="card quiz-card" data-subject="python">
+                        <h3 class="card-title">Python Programming Quiz</h3>
+                        <p class="card-content">Challenge yourself with Python programming concepts.</p>
+                        <div class="card-footer">
+                            <span class="badge">20 Questions</span>
+                            <button class="start-quiz" onclick="startQuiz('python')">Start Quiz</button>
+                        </div>
+                    </div>
+                    <div class="card quiz-card" data-subject="data">
+                        <h3 class="card-title">Data Science Quiz</h3>
+                        <p class="card-content">Explore your understanding of data science and analytics.</p>
+                        <div class="card-footer">
+                            <span class="badge">20 Questions</span>
+                            <button class="start-quiz" onclick="startQuiz('data')">Start Quiz</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="ai-decoration"></div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="quizTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="questionContainer">
+                    <p id="questionText"></p>
+                    <div id="options"></div>
+                </div>
+                <div id="quizProgress">
+                    <div id="progressBar">
+                        <div id="progressFill"></div>
+                    </div>
+                    <span id="questionNumber"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nextQuestion" class="quiz-button">Next Question</button>
+                <button id="submitQuiz" class="quiz-button" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity to cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Quiz data
+        const quizData = {
+            ai: {
+                title: "AI & Machine Learning Quiz",
+                questions: [
+                    {
+                        question: "What is machine learning?",
+                        options: [
+                            "A subset of artificial intelligence that enables systems to learn from data",
+                            "A programming language",
+                            "A type of computer hardware",
+                            "A database management system"
+                        ],
+                        correct: 0
+                    },
+                    {
+                        question: "What is deep learning?",
+                        options: [
+                            "A type of computer memory",
+                            "A subset of machine learning using neural networks",
+                            "A programming paradigm",
+                            "A data storage technique"
+                        ],
+                        correct: 1
+                    },
+                    // Add more AI questions here...
+                ]
+            },
+            python: {
+                title: "Python Programming Quiz",
+                questions: [
+                    {
+                        question: "What is Python?",
+                        options: [
+                            "A compiled programming language",
+                            "A type of snake",
+                            "An interpreted, high-level programming language",
+                            "A database system"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Which of these is not a Python data type?",
+                        options: [
+                            "List",
+                            "Dictionary",
+                            "String",
+                            "Array"
+                        ],
+                        correct: 3
+                    },
+                    // Add more Python questions here...
+                ]
+            },
+            data: {
+                title: "Data Science Quiz",
+                questions: [
+                    {
+                        question: "What is data preprocessing?",
+                        options: [
+                            "Analyzing data patterns",
+                            "Cleaning and preparing data for analysis",
+                            "Creating data visualizations",
+                            "Writing database queries"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which of these is not a common data visualization type?",
+                        options: [
+                            "Bar chart",
+                            "Pie chart",
+                            "Line graph",
+                            "Data cube"
+                        ],
+                        correct: 3
+                    },
+                    // Add more Data Science questions here...
+                ]
+            }
+        };
+
+        let currentQuiz = null;
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startQuiz(subject) {
+            currentQuiz = subject;
+            currentQuestion = 0;
+            score = 0;
+            
+            const modal = document.getElementById('quizModal');
+            const quizTitle = document.getElementById('quizTitle');
+            
+            modal.style.display = 'block';
+            quizTitle.textContent = quizData[subject].title;
+            
+            showQuestion();
+            updateProgress();
+        }
+
+        function showQuestion() {
+            const questionData = quizData[currentQuiz].questions[currentQuestion];
+            const questionText = document.getElementById('questionText');
+            const options = document.getElementById('options');
+            const nextButton = document.getElementById('nextQuestion');
+            const submitButton = document.getElementById('submitQuiz');
+            
+            questionText.textContent = questionData.question;
+            options.innerHTML = '';
+            
+            questionData.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                options.appendChild(optionDiv);
+            });
+
+            nextButton.style.display = currentQuestion < quizData[currentQuiz].questions.length - 1 ? 'block' : 'none';
+            submitButton.style.display = currentQuestion === quizData[currentQuiz].questions.length - 1 ? 'block' : 'none';
+            
+            updateProgress();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[index].classList.add('selected');
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const questionNumber = document.getElementById('questionNumber');
+            const totalQuestions = quizData[currentQuiz].questions.length;
+            
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            progressFill.style.width = `${progress}%`;
+            questionNumber.textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
+        }
+
+        // Event Listeners
+        document.querySelector('.close').onclick = () => {
+            document.getElementById('quizModal').style.display = 'none';
+        };
+
+        document.getElementById('nextQuestion').onclick = () => {
+            const selected = document.querySelector('.option.selected');
+            if (selected) {
+                currentQuestion++;
+                showQuestion();
+            }
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            const selected = document.querySelector('.option.selected');
+            if (selected) {
+                // Calculate final score and show results
+                alert(`Quiz completed! Thank you for participating.`);
+                document.getElementById('quizModal').style.display = 'none';
+            }
+        };
+
+        window.onclick = (event) => {
+            const modal = document.getElementById('quizModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html> 

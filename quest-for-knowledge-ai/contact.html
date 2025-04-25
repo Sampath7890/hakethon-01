@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - ByteHunters</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2ecc71;
+            --accent-color: #9b59b6;
+            --background-color: #f5f6fa;
+            --card-color: #ffffff;
+            --text-color: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .team-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .team-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .member-details {
+            margin-bottom: 1rem;
+        }
+
+        .member-details p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .member-details i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .team-members {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>👾 About Our Team – ByteHunters</h1>
+            <p>We are ByteHunters — a team of passionate engineering students driven to build smart solutions using tech. From full-stack development to no-code and AI, we love exploring ideas and making them real.</p>
+        </header>
+
+        <section class="team-section">
+            <h2>🧑‍💻 Team Members</h2>
+            <div class="team-members">
+                <div class="member-card">
+                    <h3 class="member-name">A. Agasthya</h3>
+                    <div class="member-details">
+                        <p><i class="fas fa-graduation-cap"></i> Branch: CSE</p>
+                        <p><i class="fas fa-university"></i> College: Geethanjali College of Engineering and Technologies</p>
+                        <p><i class="fas fa-envelope"></i> andeagasthya@gmail.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <h3 class="member-name">S. Nanda Kishore</h3>
+                    <div class="member-details">
+                        <p><i class="fas fa-graduation-cap"></i> Branch: CSE</p>
+                        <p><i class="fas fa-university"></i> College: Geethanjali College of Engineering and Technologies</p>
+                        <p><i class="fas fa-envelope"></i> sirigirinandakishor@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <h3 class="member-name">G. Sampath</h3>
+                    <div class="member-details">
+                        <p><i class="fas fa-graduation-cap"></i> Branch: CSE (AI & ML)</p>
+                        <p><i class="fas fa-university"></i> College: Keshav Memorial College of Engineering</p>
+                        <p><i class="fas fa-envelope"></i> gsksd64@gmail.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 

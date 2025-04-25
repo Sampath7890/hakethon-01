@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Buddy - AI Voice Notes</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #2ecc71;
+            --accent: #9b59b6;
+            --background: #f5f6fa;
+            --text: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            background-image: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%234a90e2" stroke-width="0.5" stroke-opacity="0.1"/><path d="M30 50h40M50 30v40" stroke="%234a90e2" stroke-width="0.5" stroke-opacity="0.1"/></svg>'),
+                linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+            background-size: 100px 100px, cover;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234a90e2"/><path d="M35 50c0-8.284 6.716-15 15-15 8.284 0 15 6.716 15 15s-6.716 15-15 15c-8.284 0-15-6.716-15-15z" fill="%23fff"/></svg>');
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .voice-recorder {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .voice-recorder::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%234a90e2" stroke-width="4"/><circle cx="50" cy="50" r="20" fill="%234a90e2"/></svg>');
+            opacity: 0.2;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(46, 204, 113, 0.1));
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: inline-block;
+        }
+
+        .transcript {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .transcript::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" fill="none" stroke="%234a90e2" stroke-width="4"/><line x1="35" y1="40" x2="65" y2="40" stroke="%234a90e2" stroke-width="4"/><line x1="35" y1="50" x2="65" y2="50" stroke="%234a90e2" stroke-width="4"/><line x1="35" y1="60" x2="55" y2="60" stroke="%234a90e2" stroke-width="4"/></svg>');
+            opacity: 0.2;
+        }
+
+        #transcriptText {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .processing {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(46, 204, 113, 0.05));
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .processing::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .saved-notes {
+            margin-top: 30px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .note-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .note-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 80l30-30 30 30M50 50V20" stroke="%234a90e2" stroke-width="4" fill="none"/></svg>');
+            opacity: 0.2;
+        }
+
+        .ai-decoration {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><linearGradient id="a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%234a90e2;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%232ecc71;stop-opacity:0.1"/></linearGradient></defs><path d="M100 0c55.228 0 100 44.772 100 100s-44.772 100-100 100S0 155.228 0 100 44.772 0 100 0zm0 30c-38.66 0-70 31.34-70 70s31.34 70 70 70 70-31.34 70-70-31.34-70-70-70z" fill="url(%23a)"/></svg>');
+            pointer-events: none;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .recording .status::before {
+            background: #dc2626;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo"></div>
+            <h1>Lecture Buddy</h1>
+        </header>
+
+        <div class="voice-recorder">
+            <div class="controls">
+                <button id="startRecording">
+                    <svg width="16" height="16" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="currentColor"/>
+                    </svg>
+                    Start Recording
+                </button>
+                <button id="stopRecording" disabled>
+                    <svg width="16" height="16" viewBox="0 0 100 100">
+                        <rect x="30" y="30" width="40" height="40" fill="currentColor"/>
+                    </svg>
+                    Stop Recording
+                </button>
+                <button id="saveTranscript" disabled>
+                    <svg width="16" height="16" viewBox="0 0 100 100">
+                        <path d="M20 50l20 20 40-40" stroke="currentColor" stroke-width="8" fill="none"/>
+                    </svg>
+                    Save Transcript
+                </button>
+            </div>
+            <div class="timer" id="recordingTimer">00:00</div>
+            <div class="status">Ready to record</div>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            <audio id="audioPlayer" class="audio-player" controls></audio>
+        </div>
+
+        <div class="transcript">
+            <div id="transcriptText">Your transcribed text will appear here...</div>
+        </div>
+
+        <div class="saved-notes">
+            <div class="note-card">
+                <h3>Previous Lecture Notes</h3>
+                <p>Click to view your saved transcriptions</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-decoration"></div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let startTime;
+        let timerInterval;
+
+        const startButton = document.getElementById('startRecording');
+        const stopButton = document.getElementById('stopRecording');
+        const saveButton = document.getElementById('saveTranscript');
+        const status = document.querySelector('.status');
+        const transcriptText = document.getElementById('transcriptText');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const timerDisplay = document.getElementById('recordingTimer');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const voiceRecorder = document.querySelector('.voice-recorder');
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function updateTimer() {
+            const elapsed = Date.now() - startTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const displaySeconds = (seconds % 60).toString().padStart(2, '0');
+            const displayMinutes = minutes.toString().padStart(2, '0');
+            timerDisplay.textContent = `${displayMinutes}:${displaySeconds}`;
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                isRecording = true;
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstart = () => {
+                    startTime = Date.now();
+                    timerInterval = setInterval(updateTimer, 1000);
+                    startButton.disabled = true;
+                    stopButton.disabled = false;
+                    saveButton.disabled = true;
+                    status.textContent = 'Recording...';
+                    voiceRecorder.classList.add('recording');
+                    audioPlayer.style.display = 'none';
+                    showSuccess('Recording started');
+                };
+
+                mediaRecorder.onstop = async () => {
+                    clearInterval(timerInterval);
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    audioPlayer.src = URL.createObjectURL(audioBlob);
+                    audioPlayer.style.display = 'block';
+                    
+                    try {
+                        await transcribeAudio(audioBlob);
+                    } catch (error) {
+                        showError('Transcription failed: ' + error.message);
+                    }
+
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start(1000);
+            } catch (error) {
+                showError('Could not access microphone: ' + error.message);
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                isRecording = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                saveButton.disabled = false;
+                status.textContent = 'Processing...';
+                voiceRecorder.classList.remove('recording');
+                showSuccess('Recording stopped');
+            }
+        }
+
+        async function transcribeAudio(audioBlob) {
+            status.textContent = 'Transcribing...';
+            
+            try {
+                // Create a new SpeechRecognition instance
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                
+                // Convert audio blob to audio element for playback during transcription
+                const audio = new Audio(URL.createObjectURL(audioBlob));
+                
+                return new Promise((resolve, reject) => {
+                    let transcript = '';
+                    
+                    recognition.onresult = (event) => {
+                        transcript = Array.from(event.results)
+                            .map(result => result[0].transcript)
+                            .join(' ');
+                        transcriptText.textContent = transcript;
+                    };
+                    
+                    recognition.onerror = (event) => {
+                        reject(new Error('Transcription error: ' + event.error));
+                    };
+                    
+                    recognition.onend = () => {
+                        status.textContent = 'Transcription complete';
+                        showSuccess('Transcription completed successfully');
+                        resolve(transcript);
+                    };
+                    
+                    // Start playing the audio and recognition
+                    audio.play();
+                    recognition.start();
+                });
+            } catch (error) {
+                throw new Error('Speech recognition not supported: ' + error.message);
+            }
+        }
+
+        function saveTranscript() {
+            const text = transcriptText.textContent;
+            if (text && text !== 'Your transcribed text will appear here...') {
+                const timestamp = new Date().toLocaleString();
+                const noteCard = document.createElement('div');
+                noteCard.className = 'note-card';
+                noteCard.innerHTML = `
+                    <h3>${timestamp}</h3>
+                    <p>${text}</p>
+                `;
+                document.querySelector('.saved-notes').prepend(noteCard);
+                showSuccess('Transcript saved successfully');
+            } else {
+                showError('No transcript to save');
+            }
+        }
+
+        // Event Listeners
+        startButton.addEventListener('click', startRecording);
+        stopButton.addEventListener('click', stopRecording);
+        saveButton.addEventListener('click', saveTranscript);
+
+        // Check browser support
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            showError('Your browser does not support voice recording');
+            startButton.disabled = true;
+        }
+    </script>
+</body>
+</html> 

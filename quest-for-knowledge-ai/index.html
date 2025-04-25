@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Lite - AI-Powered Learning Platform</title>
+    <meta name="description" content="Revolutionize your learning with AI-powered personalized education" />
+    <meta name="author" content="Lovable" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+      }
+
+      :root {
+        --primary-color: #FF6B6B;
+        --secondary-color: #4ECDC4;
+        --accent-color: #FFE66D;
+        --text-light: #f8fafc;
+        --text-dark: #2d3436;
+        --bg-light: #ffffff;
+        --bg-dark: #2d3436;
+        --gradient-1: linear-gradient(135deg, #FF6B6B, #FF8E53);
+        --gradient-2: linear-gradient(135deg, #4ECDC4, #45B7AF);
+        --gradient-3: linear-gradient(135deg, #FFE66D, #FFD166);
+      }
+
+      body {
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--bg-light);
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem 2rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .navbar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        color: var(--primary-color);
+        font-size: 1.75rem;
+        font-weight: bold;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logo i {
+        color: var(--accent-color);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+      }
+
+      .nav-links a {
+        color: var(--text-dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--gradient-1);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .hero {
+        background: var(--gradient-1);
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 4rem 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+        pointer-events: none;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-light);
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        max-width: 800px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+      }
+
+      .cta-primary {
+        background: var(--gradient-2);
+        color: var(--text-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .cta-secondary {
+        background: transparent;
+        color: var(--text-light);
+        border: 2px solid var(--text-light);
+      }
+
+      .cta-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .features {
+        padding: 8rem 2rem;
+        background: var(--bg-light);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 5rem;
+      }
+
+      .section-header h2 {
+        color: var(--text-dark);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .section-header p {
+        color: #64748b;
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+      }
+
+      .feature-card {
+        background: var(--bg-light);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .feature-icon i {
+        font-size: 1.8rem;
+        color: var(--text-light);
+      }
+
+      .feature-card h3 {
+        color: var(--text-dark);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .feature-card p {
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .tools-section {
+        padding: 8rem 2rem;
+        background: linear-gradient(135deg, #f6f9fc, #eef2f7);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tools-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-1);
+      }
+
+      .tools-section .section-header h2 {
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      }
+
+      .tool-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 3rem;
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        margin-bottom: 4rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .tool-card:nth-child(1)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-1);
+      }
+
+      .tool-card:nth-child(2)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-2);
+      }
+
+      .tool-card:nth-child(3)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-3);
+      }
+
+      .tool-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .tool-icon {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        font-size: 3.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tool-card:nth-child(1) .tool-icon {
+        background: var(--gradient-1);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.2);
+      }
+
+      .tool-card:nth-child(2) .tool-icon {
+        background: var(--gradient-2);
+        box-shadow: 0 10px 20px rgba(78, 205, 196, 0.2);
+      }
+
+      .tool-card:nth-child(3) .tool-icon {
+        background: var(--gradient-3);
+        box-shadow: 0 10px 20px rgba(255, 230, 109, 0.2);
+      }
+
+      .tool-icon i {
+        color: white;
+        font-size: 3rem;
+      }
+
+      .tool-content {
+        flex: 1;
+      }
+
+      .tool-content h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      }
+
+      .tool-content p {
+        color: #64748b;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .tool-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tool-card:nth-child(1) .tool-button {
+        background: var(--gradient-1);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+      }
+
+      .tool-card:nth-child(2) .tool-button {
+        background: var(--gradient-2);
+        box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+      }
+
+      .tool-card:nth-child(3) .tool-button {
+        background: var(--gradient-3);
+        box-shadow: 0 5px 15px rgba(255, 230, 109, 0.3);
+      }
+
+      .tool-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .tool-button i {
+        font-size: 1.2rem;
+      }
+
+      .stats-section {
+        background: var(--gradient-2);
+        padding: 6rem 2rem;
+        color: var(--text-light);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-card h3 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+      }
+
+      .stat-card p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      footer {
+        background: var(--gradient-1);
+        color: var(--text-light);
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      footer p {
+        opacity: 0.8;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .tool-card {
+          flex-direction: column;
+          text-align: center;
+          padding: 2rem;
+          gap: 1.5rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+        }
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+        color: #64748b;
+        font-size: 1.1rem;
+      }
+
+      .feature-list li i {
+        color: var(--secondary-color);
+        font-size: 1rem;
+        padding: 0.4rem;
+        background: rgba(78, 205, 196, 0.1);
+        border-radius: 50%;
+      }
+
+      .tool-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .tool-badge {
+        display: inline-block;
+        padding: 0.4rem 1rem;
+        background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-content">
+        <a href="/" class="logo">
+          <i class="fas fa-lightbulb"></i>
+          Learn Lite
+        </a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#tools">Learning Tools</a>
+          <a href="#stats">Progress</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <h1>Smart Learning,<br>Made Simple</h1>
+      <p>Experience AI-powered education that adapts to you.</p>
+      <div class="cta-buttons">
+        <a href="#start" class="cta-button cta-primary">
+          <i class="fas fa-rocket"></i>
+          Start Learning Now
+        </a>
+        <a href="#features" class="cta-button cta-secondary">
+          <i class="fas fa-info-circle"></i>
+          Learn More
+        </a>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Why Choose Our Platform?</h2>
+          <p>Discover how our AI-powered platform transforms the way you learn</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3>Personalized Learning</h3>
+            <p>Our AI adapts to your learning style and pace, creating a customized learning path just for you.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3>Interactive Content</h3>
+            <p>Engage with dynamic content that makes learning fun and effective.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Monitor your learning journey with detailed analytics and insights.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools-section" id="tools">
+      <div class="container">
+        <div class="section-header">
+          <h2>AI-Powered Learning Tools</h2>
+          <p>Enhance your learning experience with our cutting-edge tools</p>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="tool-content">
+            <h3>AI Tutor – Your Personal Study Buddy</h3>
+            <p>Get personalized assistance 24/7 from our AI tutor. Ask questions, get explanations, and receive instant feedback on your progress.</p>
+            <a href="ai-tutor.html" class="tool-button">
+              <i class="fas fa-arrow-right"></i>
+              Try AI Tutor
+            </a>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Gamified Learning – Fun with Facts</h3>
+            <p>Turn learning into an exciting game with points, levels, and achievements. Make studying fun and engaging!</p>
+            <a href="gamified-learning.html" class="tool-button">
+              <i class="fas fa-arrow-right"></i>
+              Start Gaming
+            </a>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-microphone-alt"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Voice-to-Text Notes – Lecture Buddy</h3>
+            <p>Record your lectures and get instant, accurate transcriptions. Our advanced AI technology makes note-taking effortless!</p>
+            <a href="lecture-buddy.html" class="tool-button">
+              <i class="fas fa-arrow-right"></i>
+              Start Recording
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section" id="stats">
+      <div class="container">
+        <div class="section-header">
+          <h2>Track Your Progress</h2>
+          <p>Monitor your learning journey with our comprehensive performance tracker</p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>85%</h3>
+            <p>Completion Rate</p>
+          </div>
+          <div class="stat-card">
+            <h3>92%</h3>
+            <p>Understanding Score</p>
+          </div>
+          <div class="stat-card">
+            <h3>15</h3>
+            <p>Skills Mastered</p>
+          </div>
+          <div class="stat-card">
+            <h3>24h</h3>
+            <p>Learning Streak</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Learn Lite. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

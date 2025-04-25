@@ -1,0 +1,9 @@
+{
+  "name": "quest-for-knowledge-ai",
+  "version": "1.0.0",
+  "description": "AI-powered learning platform",
+  "main": "index.js",
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
